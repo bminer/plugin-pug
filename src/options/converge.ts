@@ -53,5 +53,6 @@ export function convergeOptions(
     pugPreserveAttributeBrackets: options.pugPreserveAttributeBrackets,
     pugPreserveWhitespace: options.pugPreserveWhitespace,
     pugClosingBracketIndentDepth: options.pugClosingBracketIndentDepth ?? 0,
+    plugins: options.plugins,
   };
 }

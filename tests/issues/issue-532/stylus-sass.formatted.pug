@@ -1,0 +1,13 @@
+//- Formatted by the stylus plugin, which drops the optional colons
+style(type="stylus").
+  a
+    color red
+
+style(type="text/styl").
+  a
+    color red
+
+//- Stays unchanged, because no loaded plugin provides a parser for sass
+style(type="sass").
+  a
+    color: red

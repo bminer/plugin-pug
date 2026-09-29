@@ -1,5 +1,5 @@
 import { types } from 'node:util';
-import type { BuiltInParserName, Options, RequiredOptions } from 'prettier';
+import type { Options, RequiredOptions } from 'prettier';
 import { format } from 'prettier';
 import type PrettierAngularPlugin from 'prettier/plugins/angular';
 import type PrettierBabelPlugin from 'prettier/plugins/babel';
@@ -146,6 +146,7 @@ export interface PugPrinterOptions {
   readonly pugPreserveAttributeBrackets: boolean;
   readonly pugPreserveWhitespace: boolean;
   readonly pugClosingBracketIndentDepth: PugClosingBracketIndentDepth;
+  readonly plugins: RequiredOptions['plugins'];
 }
 
 /**
@@ -1974,7 +1975,8 @@ export class PugPrinter {
         this.currentIndex,
       );
 
-      let parser: BuiltInParserName | undefined;
+      let parser: string | undefined;
+      let plugins: RequiredOptions['plugins'] | undefined;
       switch (lastTagToken?.val) {
         case 'script': {
           parser = getScriptParserName(
@@ -1984,8 +1986,10 @@ export class PugPrinter {
         }
 
         case 'style': {
+          plugins = this.options.plugins;
           parser = getStyleParserName(
             previousTypeAttributeToken(this.tokens, this.currentIndex),
+            plugins,
           );
           break;
         }
@@ -2036,6 +2040,7 @@ export class PugPrinter {
         try {
           result = await format(rawText, {
             parser,
+            plugins,
             ...this.codeInterpolationOptions,
           });
         } catch (error: unknown) {
